@@ -15,7 +15,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  *
  * ATTENTION: if you make a new skin you have to change the class name below accordingly
  */
-class bootstrap_photoblog_Skin extends Skin
+class photo_mouse_Skin extends Skin
 {
 	/**
 	 * Do we want to use style.min.css instead of style.css ?
@@ -30,7 +30,7 @@ class bootstrap_photoblog_Skin extends Skin
 	 */
 	function get_default_name()
 	{
-		return 'Bootstrap Photoblog';
+		return 'Photo Mouse';
 	}
 
 
