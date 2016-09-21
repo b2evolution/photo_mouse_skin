@@ -93,12 +93,14 @@ $params = array_merge( array(
 					'title'     => T_('Edit title/description...'),
 				) );
 				
+				if( ! $Item->is_intro() ) {
 				// Permalink:
 				$Item->permanent_link( array(
 						'before'    => '',
 						'after'     => '',
 						'text' => '<i class="fa fa-external-link"></i> '.T_('Permalink'),
 					) );
+				}
 					
 				// Link to comments, trackbacks, etc.:
 				$Item->feedback_link( array(
@@ -132,11 +134,13 @@ $params = array_merge( array(
 			?></h3>
 
 			<?php
+			if( ! $Item->is_intro() ) {
 				$Item->issue_date( array(
 						'before'      => '<span class="timestamp">',
 						'after'       => '</span>',
 						'date_format' => locale_datefmt().' H:i',
 					) );
+			}
 			?>
 
 		</div>
@@ -149,7 +153,11 @@ $params = array_merge( array(
 			// /skins/_item_content.inc.php file into the current skin folder.
 			// -------------------------- END OF POST CONTENT -------------------------
 		?>
-
+		
+		<?php
+		if( ! $Item->is_intro() ) {
+		?>
+		
 		<div class="evo_post_footer">
 		<?php
 			$Item->author( array(
@@ -178,22 +186,24 @@ $params = array_merge( array(
 						'after' =>          ' ',
 						'separator' =>      ', ',
 					) );
-			}
 		?>
 
 		<?php
-			// URL link, if the post has one:
-			$Item->url_link( array(
-					'before'        => ' &bull; '.T_('Link').': ',
-					'after'         => ' ',
-					'text_template' => '$url$',
-					'url_template'  => '$url$',
-					'target'        => '',
-					'podcast'       => false,        // DO NOT display mp3 player if post type is podcast
-				) );
+				// URL link, if the post has one:
+				$Item->url_link( array(
+						'before'        => ' &bull; '.T_('Link').': ',
+						'after'         => ' ',
+						'text_template' => '$url$',
+						'url_template'  => '$url$',
+						'target'        => '',
+						'podcast'       => false,        // DO NOT display mp3 player if post type is podcast
+					) );
+			}
 		?>
 
 		</div>
+		<?php } ?>
+		
 	</div>
 
 	<?php

@@ -388,7 +388,10 @@ class photo_mouse_Skin extends Skin
 		
 		if( $menu_t_color = $this->get_setting( 'menu_text_color' ) )
 		{ // Menu elements color:
-			$custom_css .= 'div.pageHeader, div.pageHeader a, div.pageHeader span { color: '.$menu_t_color." }\n";
+			$custom_css .= '
+			div.pageHeader,
+			div.pageHeader a,
+			div.pageHeader span { color: '.$menu_t_color." }\n";
 		}
 		
 		if( $menu_a_hover = $this->get_setting( 'menu_links_hover' ) )
@@ -398,12 +401,37 @@ class photo_mouse_Skin extends Skin
 		
 		if( $post_bg_color = $this->get_setting( 'post_bg_color' ) )
 		{ // Post background color:
-			$custom_css .= 'div.evo_post_details, .panel, #comment_preview { background-color: '.$post_bg_color." }\n";
+			$custom_css .= '
+			div.evo_post_details,
+			.panel,
+			#comment_preview,
+			.error_404,
+			.error_additional_content,
+			.disp_arcdir main,
+			.disp_catdir main,
+			div.widget_core_coll_item_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_featured_posts.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_post_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_page_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content { background-color: '.$post_bg_color." }\n";
 		}
 
 		if( $post_border_col = $this->get_setting( 'post_border_col' ) )
 		{ // Post border color:
-			$custom_css .= '.evo_post div.evo_post_details, .panel, .evo_featured_post div.evo_post_details, .featurepost div.evo_post_details { border: 1px solid '.$post_border_col." }\n";
+			$custom_css .= '
+			.evo_post div.evo_post_details,
+			.panel,
+			.evo_featured_post div.evo_post_details,
+			.featurepost div.evo_post_details,
+			.error_404,
+			.error_additional_content,
+			.disp_arcdir main,
+			.disp_catdir main,
+			div.widget_core_coll_item_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_featured_posts.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_post_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_page_list.evo_layout_rwd .widget_rwd_content,
+			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content { border: 1px solid '.$post_border_col." }\n";
 			$custom_css .= 'article.evo_intro_post .evo_post_details { border: 3px solid '.$post_border_col." }\n";
 			$custom_css .= '.main_content_container .panel-heading, .evo_comment__meta_info a, .evo_post_comment_notification a, .evo_comment__meta_info a:hover, .evo_post_comment_notification a:hover { background-color: '.$post_border_col." !important }\n";
 		}
@@ -416,12 +444,17 @@ class photo_mouse_Skin extends Skin
 		if( $main_link_color = $this->get_setting( 'main_link_color' ) )
 		{ // Links color (main section):
 			$custom_css .= 'div.main_content_container a { color: '.$main_link_color." }\n";
+			$custom_css .= 'div.item_content a { color: '.$main_link_color." !important }\n";
 			$custom_css .= '#bCalendarToday { background-color: '.$main_link_color." }\n";
 		}
 
 		if( $panel_titles = $this->get_setting( 'panel_titles' ) )
 		{ // Panel titles color:
-			$custom_css .= '.main_content_container .panel-heading h4, .main_content_container .panel-heading h3, .main_content_container .panel-heading a, legend.panel-heading { color: '.$panel_titles." }\n";
+			$custom_css .= '
+			.main_content_container .panel-heading h4,
+			.main_content_container .panel-heading h3,
+			.main_content_container .panel-heading a,
+			.main_content_container legend.panel-heading { color: '.$panel_titles." }\n";
 		}
 		
 		if( $prev_bgd = $this->get_setting( 'prev_bgd' ) )
@@ -431,8 +464,12 @@ class photo_mouse_Skin extends Skin
 
 		if( $subm_bgd = $this->get_setting( 'subm_bgd' ) )
 		{ // Submit button background color:
-			$custom_css .= '.main_content_container .submit { background-color: '.$subm_bgd." }\n";
-			$custom_css .= '.main_content_container .search_submit { border-color: '.$subm_bgd." }\n";
+			$custom_css .= '
+			.main_content_container .submit,
+			.main_content_container .filters button[type=submit] { background-color: '.$subm_bgd." }\n";
+			$custom_css .= '
+			.main_content_container .search_submit,
+			.main_content_container .filters button[type=submit] { border-color: '.$subm_bgd." }\n";
 		}
 		
 		if( !empty( $custom_css ) )
