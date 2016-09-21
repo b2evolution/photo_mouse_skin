@@ -1161,11 +1161,14 @@ span.loader_img.loader_ajax_form {
 .page_navigation span {
   display: inline-block;
   vertical-align: middle;
-  margin: 0 3px;
+  margin: 0 2px;
 }
 .page_navigation a i,
 .page_navigation span i {
-  font-size: 20px;
+  font-size: 18px;
+}
+.page_navigation a {
+  padding: 6px 10px;
 }
 .single_page_navigation a {
   font-size: 36px;
@@ -1194,8 +1197,16 @@ div.bSideItem h4 {
 .error_404,
 .error_additional_content,
 .disp_arcdir main,
-.disp_catdir main {
+.disp_catdir main,
+.search_result {
   padding: 15px;
+}
+.search_result {
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+.search_result .search_content_wrap {
+  margin-left: 50px;
 }
 .disp_arcdir main h2,
 .disp_catdir main h2 {
