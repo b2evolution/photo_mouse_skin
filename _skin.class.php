@@ -413,7 +413,9 @@ class photo_mouse_Skin extends Skin
 			div.widget_core_coll_featured_posts.evo_layout_rwd .widget_rwd_content,
 			div.widget_core_coll_post_list.evo_layout_rwd .widget_rwd_content,
 			div.widget_core_coll_page_list.evo_layout_rwd .widget_rwd_content,
-			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content { background-color: '.$post_bg_color." }\n";
+			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content,
+			.search_result,
+			.page_navigation a { background-color: '.$post_bg_color." }\n";
 		}
 
 		if( $post_border_col = $this->get_setting( 'post_border_col' ) )
@@ -431,7 +433,9 @@ class photo_mouse_Skin extends Skin
 			div.widget_core_coll_featured_posts.evo_layout_rwd .widget_rwd_content,
 			div.widget_core_coll_post_list.evo_layout_rwd .widget_rwd_content,
 			div.widget_core_coll_page_list.evo_layout_rwd .widget_rwd_content,
-			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content { border: 1px solid '.$post_border_col." }\n";
+			div.widget_core_coll_related_post_list.evo_layout_rwd .widget_rwd_content,
+			.search_result,
+			.page_navigation a { border: 1px solid '.$post_border_col." }\n";
 			$custom_css .= 'article.evo_intro_post .evo_post_details { border: 3px solid '.$post_border_col." }\n";
 			$custom_css .= '.main_content_container .panel-heading, .evo_comment__meta_info a, .evo_post_comment_notification a, .evo_comment__meta_info a:hover, .evo_post_comment_notification a:hover { background-color: '.$post_border_col." !important }\n";
 		}
