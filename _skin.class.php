@@ -57,6 +57,34 @@ class photo_mouse_Skin extends Skin
 	{
 		return 6;
 	}
+	
+	
+	/**
+	 * Get supported collection kinds.
+	 *
+	 * This should be overloaded in skins.
+	 *
+	 * For each kind the answer could be:
+	 * - 'yes' : this skin does support that collection kind (the result will be was is expected)
+	 * - 'partial' : this skin is not a primary choice for this collection kind (but still produces an output that makes sense)
+	 * - 'maybe' : this skin has not been tested with this collection kind
+	 * - 'no' : this skin does not support that collection kind (the result would not be what is expected)
+	 * There may be more possible answers in the future...
+	 */
+	public function get_supported_coll_kinds()
+	{
+		$supported_kinds = array(
+				'main' => 'partial',
+				'std' => 'yes',		// Blog
+				'photo' => 'yes',
+				'forum' => 'no',
+				'manual' => 'no',
+				'group' => 'maybe',  // Tracker
+				// Any kind that is not listed should be considered as "maybe" supported
+			);
+
+		return $supported_kinds;
+	}
 
 
 	/**
@@ -377,12 +405,12 @@ class photo_mouse_Skin extends Skin
 		
 		if( $page_bg_color = $this->get_setting( 'page_bg_color' ) )
 		{ // Background color:
-			$custom_css .= 'body { background-color: '.$page_bg_color." }\n";
+			$custom_css .= '#skin_wrapper { background-color: '.$page_bg_color." }\n";
 		}
 		
 		if( $text_color = $this->get_setting( 'page_text_color' ) )
 		{ // Text color:
-			$custom_css .= 'body { color: '.$text_color." }\n";
+			$custom_css .= '#skin_wrapper { color: '.$text_color." }\n";
 		}
 		
 		if( $menu_bg_color = $this->get_setting( 'menu_bg_color' ) )
