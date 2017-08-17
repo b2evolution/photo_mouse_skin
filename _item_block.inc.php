@@ -25,6 +25,34 @@ $params = array_merge( array(
 		'image_size'            	 => '', // Do not display images in content block - Image is handled separately
 		'url_link_text_template'	 => '', // link will be displayed (except player if podcast)
 		'image_class'                => '',
+		'before_images'            => '<div class="evo_post_images">',
+		'before_image'             => '<figure class="evo_image_block">',
+		'before_image_legend'      => '<figcaption class="evo_image_legend">',
+		'after_image_legend'       => '</figcaption>',
+		'after_image'              => '</figure>',
+		'after_images'             => '</div>',
+		'image_class'              => 'img-responsive',
+		'image_size'               => 'fit-1280x720',
+		'image_limit'              =>  1000,
+		'image_link_to'            => 'original', // Can be 'original', 'single' or empty
+		'excerpt_image_class'      => '',
+		'excerpt_image_size'       => 'fit-80x80',
+		'excerpt_image_limit'      => 0,
+		'excerpt_image_link_to'    => 'single',
+		'include_cover_images'     => false, // Set to true if you want cover images to appear with teaser images.
+
+		'before_gallery'           => '<div class="evo_post_gallery">',
+		'after_gallery'            => '</div>',
+		'gallery_table_start'      => '',
+		'gallery_table_end'        => '',
+		'gallery_row_start'        => '',
+		'gallery_row_end'          => '',
+		'gallery_cell_start'       => '<div class="evo_post_gallery__image">',
+		'gallery_cell_end'         => '</div>',
+		'gallery_image_size'       => 'crop-80x80',
+		'gallery_image_limit'      => 1000,
+		'gallery_colls'            => 5,
+		'gallery_order'            => '', // Can be 'ASC', 'DESC', 'RAND' or empty
 	), $params );
 
 ?>
@@ -36,6 +64,8 @@ $params = array_merge( array(
 	?>
 
 	<?php
+	if ( $disp != 'single' || $disp != 'page' )
+	{
 		// Display images that are linked to this post:
 		$Item->images( array(
 				'before' =>              '<div class="evo_post_images">',
@@ -69,6 +99,34 @@ $params = array_merge( array(
 				'gallery_colls'            => 5,
 				'gallery_order'            => '', // Can be 'ASC', 'DESC', 'RAND' or empty
 			) );
+		} else {
+							$Item->images( array(
+						'before'              => $params['before_images'],
+						'before_image'        => $params['before_image'],
+						'before_image_legend' => $params['before_image_legend'],
+						'after_image_legend'  => $params['after_image_legend'],
+						'after_image'         => $params['after_image'],
+						'after'               => $params['after_images'],
+						'image_class'         => $params['image_class'],
+						'image_size'          => $params['image_size'],
+						'limit'               => $params['image_limit'],
+						'image_link_to'       => $params['image_link_to'],
+						'before_gallery'      => $params['before_gallery'],
+						'after_gallery'       => $params['after_gallery'],
+						'gallery_table_start' => $params['gallery_table_start'],
+						'gallery_table_end'   => $params['gallery_table_end'],
+						'gallery_row_start'   => $params['gallery_row_start'],
+						'gallery_row_end'     => $params['gallery_row_end'],
+						'gallery_cell_start'  => $params['gallery_cell_start'],
+						'gallery_cell_end'    => $params['gallery_cell_end'],
+						'gallery_image_size'  => $params['gallery_image_size'],
+						'gallery_image_limit' => $params['gallery_image_limit'],
+						'gallery_colls'       => $params['gallery_colls'],
+						'gallery_order'       => $params['gallery_order'],
+						// Optionally restrict to files/images linked to specific position: 'teaser'|'teaserperm'|'teaserlink'|'aftermore'|'inline'|'cover'
+						'restrict_to_image_position' => 'aftermore',
+					) );
+		}
 	?>
 
 
