@@ -17,7 +17,7 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
  */
 class photo_mouse_Skin extends Skin
 {
-	var $version = '1.0.0';
+	var $version = '7.0.0';
 	
 	
 	/**
