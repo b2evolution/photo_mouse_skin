@@ -18,8 +18,8 @@ if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.'
 class photo_mouse_Skin extends Skin
 {
 	var $version = '7.0.0';
-	
-	
+
+
 	/**
 	 * Do we want to use style.min.css instead of style.css ?
 	 */
@@ -27,7 +27,7 @@ class photo_mouse_Skin extends Skin
 	// Note: we leave this on "check" in the bootstrap_blog_skin so it's easier for beginners to just delete the .min.css file
 	// But for best performance, you should set it to true.
 
-	
+
 	/**
 	 * Get default name for the skin.
 	 * Note: the admin can customize it.
@@ -57,8 +57,8 @@ class photo_mouse_Skin extends Skin
 	{
 		return 6;
 	}
-	
-	
+
+
 	/**
 	 * Get supported collection kinds.
 	 *
@@ -118,6 +118,99 @@ class photo_mouse_Skin extends Skin
 
 
 	/**
+	 * Get the declarations of the widgets that the skin recommends by default.
+	 *
+	 * The skin class defines a default set of widgets to used. Skins should override this.
+	 *
+	 * @param string Collection type: 'std', 'main', 'photo', 'group', 'forum', 'manual'
+	 * @param string Skin type: 'normal' - Standard, 'mobile' - Phone, 'tablet' - Tablet
+	 * @param array Additional params. Example value 'init_as_blog_b' => true
+	 * @return array Array of default widgets:
+	 *          - Key - Container code,
+	 *          - Value - array of widget arrays OR SPECIAL VALUES:
+	 *             - 'coll_type': Include this container only for collection kinds separated by comma, first char "-" means to exclude,
+	 *             - 'type': Container type, empty - main container, other values: 'sub', 'page', 'shared', 'shared-sub',
+	 *             - 'name': Container name,
+	 *             - 'order': Container order,
+	 *             - widget data array():
+	 *                - 0: Widget order (*mandatory field*),
+	 *                - 1: Widget code (*mandatory field*),
+	 *                - 'params' - Widget params(array or serialized string),
+	 *                - 'type' - Widget type(default = 'core', another value - 'plugin'),
+	 *                - 'enabled' - Boolean value; default is TRUE; FALSE to install the widget as disabled,
+	 *                - 'coll_type': Include this widget only for collection types separated by comma, first char "-" means to exclude,
+	 *                - 'skin_type': Include this widget only for skin types separated by comma, first char "-" means to exclude,
+	 *                - 'install' - Boolean value; default is TRUE; FALSE to skip this widget on install.
+	 */
+	function get_default_widgets( $coll_type, $skin_type = 'normal', $context = array() )
+	{
+		global $DB;
+
+		$context = array_merge( array(
+				'current_coll_ID'       => NULL,
+				'coll_home_ID'          => NULL,
+				'coll_blog_a_ID'        => NULL,
+				'coll_photoblog_ID'     => NULL,
+				'init_as_home'          => false,
+				'init_as_blog_a'        => false,
+				'init_as_blog_b'        => false,
+				'init_as_forums'        => false,
+				'init_as_events'        => false,
+				'install_test_features' => false,
+			), $context );
+
+		$default_widgets = array();
+
+		/* Item in List */
+		$default_widgets['item_in_list'] = array(
+			array( 10, 'item_visibility_badge' ),
+			array( 20, 'item_info_line', 'params' => array(
+					'flag_icon'      => false,
+					'permalink_icon' => true,
+					'before_author'  => 'none',
+					'category'       => false,
+					'edit_link'      => true,
+					'date_format'    => 'none',
+					'time_format'    => 'none',
+				) ),
+			array( 30, 'item_title' ),
+		);
+
+		/* Item Single Header */
+		$default_widgets['item_single_header'] = array(
+			array( 10, 'item_visibility_badge' ),
+			array( 20, 'item_info_line', 'params' => array(
+					'flag_icon'      => false,
+					'permalink_icon' => true,
+					'before_author'  => 'none',
+					'category'       => false,
+					'edit_link'      => true,
+					'date_format'    => 'none',
+					'time_format'    => 'none',
+				) ),
+			array( 30, 'item_title' ),
+		);
+
+		/* Item Single */
+		$default_widgets['item_single'] = array(
+			array( 10, 'item_content' ),
+		);
+
+		/* Item Page */
+		$default_widgets['item_page'] = array(
+			array( 10, 'item_content' ),
+			array( 15, 'item_attachments' ),
+			array( 17, 'item_link' ),
+			array( 20, 'item_tags', 'install' => ! $context['init_as_blog_a'] && ! $context['init_as_events'] ),
+			array( 50, 'item_seen_by' ),
+			array( 60, 'item_vote' ),
+		);
+
+		return $default_widgets;
+	}
+
+
+	/**
 	 * Get definitions for editable params
 	 *
 	 * @see Plugin::GetDefaultSettings()
@@ -127,7 +220,7 @@ class photo_mouse_Skin extends Skin
 	{
 		// Load to use function get_available_thumb_sizes()
 		load_funcs( 'files/model/_image.funcs.php' );
-		
+
 		$r = array_merge( array(
 				// Layout settings
 				'section_layout_start' => array(
@@ -151,8 +244,8 @@ class photo_mouse_Skin extends Skin
 				'section_layout_end' => array(
 					'layout' => 'end_fieldset',
 				),
-				
-				
+
+
 				// Images layout
 				'section_image_start' => array(
 					'layout' => 'begin_fieldset',
@@ -175,8 +268,8 @@ class photo_mouse_Skin extends Skin
 				'section_image_end' => array(
 					'layout' => 'end_fieldset',
 				),
-				
-				
+
+
 				// Custom page styles
 				'section_page_start' => array(
 					'layout' => 'begin_fieldset',
@@ -245,8 +338,8 @@ class photo_mouse_Skin extends Skin
 				'section_page_end' => array(
 					'layout' => 'end_fieldset',
 				),
-				
-				
+
+
 				// Submit & preview styles
 				'subm_prev_start' => array(
 					'layout' => 'begin_fieldset',
@@ -265,8 +358,8 @@ class photo_mouse_Skin extends Skin
 				'subm_prev_end' => array(
 					'layout' => 'end_fieldset',
 				),
-				
-				
+
+
 				// Footer styles
 				'footer_start' => array(
 					'layout' => 'begin_fieldset',
@@ -291,7 +384,7 @@ class photo_mouse_Skin extends Skin
 					'layout' => 'end_fieldset',
 				),
 
-				
+
 				// Colorbox image zoom
 				'section_colorbox_start' => array(
 					'layout' => 'begin_fieldset',
@@ -429,25 +522,25 @@ class photo_mouse_Skin extends Skin
 		{
 			add_css_headline( '.evo_image_block img { max-height: '.$max_image_height.'px; width: auto; }' );
 		}
-		
+
 		// Add custom CSS:
 		$custom_css = '';
-		
+
 		if( $page_bg_color = $this->get_setting( 'page_bg_color' ) )
 		{ // Background color:
 			$custom_css .= '#skin_wrapper { background-color: '.$page_bg_color." }\n";
 		}
-		
+
 		if( $text_color = $this->get_setting( 'page_text_color' ) )
 		{ // Text color:
 			$custom_css .= '#skin_wrapper { color: '.$text_color." }\n";
 		}
-		
+
 		if( $menu_bg_color = $this->get_setting( 'menu_bg_color' ) )
 		{ // Menu background color:
 			$custom_css .= 'div.pageHeader { background-color: '.$menu_bg_color." }\n";
 		}
-		
+
 		if( $menu_t_color = $this->get_setting( 'menu_text_color' ) )
 		{ // Menu elements color:
 			$custom_css .= '
@@ -455,12 +548,12 @@ class photo_mouse_Skin extends Skin
 			div.pageHeader a,
 			div.pageHeader span { color: '.$menu_t_color." }\n";
 		}
-		
+
 		if( $menu_a_hover = $this->get_setting( 'menu_links_hover' ) )
 		{ // Menu links hover color:
 			$custom_css .= 'div.pageHeader a:hover { color: '.$menu_a_hover." }\n";
 		}
-		
+
 		if( $post_bg_color = $this->get_setting( 'post_bg_color' ) )
 		{ // Post background color:
 			$custom_css .= '
@@ -501,7 +594,7 @@ class photo_mouse_Skin extends Skin
 			$custom_css .= 'article.evo_intro_post .evo_post_details { border: 3px solid '.$post_border_col." }\n";
 			$custom_css .= '.main_content_container .panel-heading, .evo_comment__meta_info a, .evo_post_comment_notification a, .evo_comment__meta_info a:hover, .evo_post_comment_notification a:hover { background-color: '.$post_border_col." !important }\n";
 		}
-		
+
 		if( $post_text_color = $this->get_setting( 'post_text_color' ) )
 		{ // Post text color:
 			$custom_css .= 'div.evo_post_details { color: '.$post_text_color." }\n";
@@ -522,7 +615,7 @@ class photo_mouse_Skin extends Skin
 			.main_content_container .panel-heading a,
 			.main_content_container legend.panel-heading { color: '.$panel_titles." }\n";
 		}
-		
+
 		if( $prev_bgd = $this->get_setting( 'prev_bgd' ) )
 		{ // Preview button background color:
 			$custom_css .= '.main_content_container .preview { background-color: '.$prev_bgd." }\n";
@@ -537,7 +630,7 @@ class photo_mouse_Skin extends Skin
 			.main_content_container .search_submit,
 			.main_content_container .filters button[type=submit] { border-color: '.$subm_bgd." }\n";
 		}
-		
+
 		if( !empty( $custom_css ) )
 		{
 			$custom_css = '<style type="text/css">

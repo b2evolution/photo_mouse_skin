@@ -135,31 +135,234 @@ $params = array_merge( array(
 		<div class="evo_post_details_header">
 
 			<?php
+			if( ! $Item->is_intro() )
+			{
+				$title_before = '<h3 class="evo_post_title linked">';
+				$title_after = '</h3>';
+
+				ob_start();
+				$Item->feedback_link( array(
+						'type' => 'feedbacks',
+						'link_before' => '',
+						'link_after' => '',
+						'link_text_zero' => get_icon( 'nocomment' ),
+						'link_text_one' => '1 '.get_icon( 'comments' ),
+						'link_text_more' => T_('%d ').get_icon( 'comments' ),
+						'link_title' => '#',
+					) );
+				$feedback_links = ob_get_contents();
+				ob_end_clean();
+
+				if( !$Item->is_intro() )
+				{
+					ob_start();
+					$Item->issue_date( array(
+							'before'      => '</h3><span class="timestamp">',
+							'after'       => '</span>',
+							'date_format' => locale_datefmt().' H:i',
+						) );
+					$timestamp = ob_get_contents();
+					ob_end_clean();
+					$title_after .= $timestamp;
+				}
+
+				if( $disp == 'posts' )
+				{
+					// ------------------------- "Item in List" CONTAINER EMBEDDED HERE --------------------------
+					// Display container contents:
+					widget_container( 'item_in_list', array(
+						'widget_context' => 'item',	// Signal that we are displaying within an Item
+						// The following (optional) params will be used as defaults for widgets included in this container:
+						'container_display_if_empty' => false, // If no widget, don't display container at all
+						// This will enclose each widget in a block:
+						'block_start' => '<div class="evo_widget $wi_class$">',
+						'block_end' => '</div>',
+						// This will enclose the title of each widget:
+						'block_title_start' => '<h3>',
+						'block_title_end' => '</h3>',
+						// Template params for "Item Title" widget:
+						'widget_item_title_params'  => array(
+								'before' => $title_before,
+								'after'  => $title_after,
+							),
+						// Template params for "Item Visibility Badge" widget:
+						'widget_item_visibility_badge_display'  => ( ! $Item->is_intro() && $Item->status != 'published' ),
+						'widget_item_visibility_badge_params' => array(
+								'template' => '<div class="floatright"><span class="note status_$status$"><span>$status_title$</span></span></div>',
+							),
+						// Template params for "Item Info Line" widget:
+						'widget_item_info_line_before' => '<div class="action_right">',
+						'widget_item_info_line_after'  => '</div>',
+						'widget_item_info_line_params' => array(
+								'before_flag'         => '',
+								'after_flag'          => '',
+								'permalink_text'      => '<i class="fa fa-external-link"></i> '.T_('Permalink'),
+								'before_permalink'    => '',
+								'after_permalink'     => '',
+								'before_author'       => 'by <span class="identity_link_username">',
+								'after_author'        => '</span>',
+								'before_post_time'    => '',
+								'after_post_time'     => '',
+								'before_categories'   => 'in ',
+								'after_categories'    => '',
+								'before_last_touched' => '<span class="text-muted"> &ndash; '.T_('Last touched').': ',
+								'after_last_touched'  => '</span>',
+								'before_last_updated' => '<span class="text-muted"> &ndash; '.T_('Contents updated').': ',
+								'after_last_updated'  => '</span>',
+								'before_edit_link'    => '',
+								'after_edit_link'     => '',
+								'format'              => '$flag$$post_time$$author$$categories$$edit_link$$permalink$'.$feedback_links,
+							),
+					) );
+					// ----------------------------- END OF "Item in List" CONTAINER -----------------------------
+
+				}
+				elseif( $disp == 'single' )
+				{
+					// ------------------------- "Item Single - Header" CONTAINER EMBEDDED HERE --------------------------
+					// Display container contents:
+					widget_container( 'item_single_header', array(
+						'widget_context' => 'item',	// Signal that we are displaying within an Item
+						// The following (optional) params will be used as defaults for widgets included in this container:
+						'container_display_if_empty' => false, // If no widget, don't display container at all
+						// This will enclose each widget in a block:
+						'block_start' => '<div class="evo_widget $wi_class$">',
+						'block_end' => '</div>',
+						// This will enclose the title of each widget:
+						'block_title_start' => '<h3>',
+						'block_title_end' => '</h3>',
+						'author_link_text' => $params['author_link_text'],
+
+						// Template params for "Item Title" widget:
+							'widget_item_title_params'  => array(
+								'before'    => $title_before,
+								'after'     => $title_after,
+								'link_type' => 'permalink',
+							),
+						// Template params for "Item Next/Previous" widget:
+						'widget_item_next_previous_params' => array(
+								'block_start' => '<nav><ul class="pager">',
+								'block_end'   => '</ul></nav>',
+								'prev_start'  => '<li class="previous">',
+								'prev_end'    => '</li>',
+								'next_start'  => '<li class="next">',
+								'next_end'    => '</li>',
+							),
+						// Template params for "Item Visibility Badge" widget:
+							'widget_item_visibility_badge_display'  => ( ! $Item->is_intro() && $Item->status != 'published' ),
+							'widget_item_visibility_badge_params' => array(
+									'template' => '<div class="floatright"><span class="note status_$status$"><span>$status_title$</span></span></div>',
+								),
+						// Template params for "Item Info Line" widget:
+							'widget_item_info_line_before' => '<div class="action_right">',
+							'widget_item_info_line_after'  => '</div>',
+							'widget_item_info_line_params' => array(
+									'before_flag'         => '',
+									'after_flag'          => '',
+									'permalink_text'      => '<i class="fa fa-external-link"></i> '.T_('Permalink'),
+									'before_permalink'    => '',
+									'after_permalink'     => '',
+									'before_author'       => 'by <span class="identity_link_username">',
+									'after_author'        => '</span>',
+									'before_post_time'    => '',
+									'after_post_time'     => '',
+									'before_categories'   => 'in ',
+									'after_categories'    => '',
+									'before_last_touched' => '<span class="text-muted"> &ndash; '.T_('Last touched').': ',
+									'after_last_touched'  => '</span>',
+									'before_last_updated' => '<span class="text-muted"> &ndash; '.T_('Contents updated').': ',
+									'after_last_updated'  => '</span>',
+									'before_edit_link'    => '',
+									'after_edit_link'     => '',
+									'format'              => '$flag$$post_time$$author$$categories$$edit_link$$permalink$'.$feedback_links,
+								)
+							) );
+							// ----------------------------- END OF "Item Single - Header" CONTAINER -----------------------------
+				}
+				else
+				{
+					if( $Item->status != 'published' )
+					{
+						$Item->format_status( array(
+								'template' => '<div class="floatright"><span class="note status_$status$"><span>$status_title$</span></span></div>',
+							) );
+					}
+
+					echo '<div class="action_right">';
+
+					// Link for editing
+					$Item->edit_link( array(
+							'before'    => '',
+							'after'     => '',
+							'title'     => T_('Edit title/description...'),
+						) );
+
+					if( ! $Item->is_intro() )
+					{	// Permalink:
+						$Item->permanent_link( array(
+								'before'    => '',
+								'after'     => '',
+								'text' => '<i class="fa fa-external-link"></i> '.T_('Permalink'),
+							) );
+					}
+
+					// Link to comments, trackbacks, etc.:
+					$Item->feedback_link( array(
+									'type' => 'feedbacks',
+									'link_before' => '',
+									'link_after' => '',
+									'link_text_zero' => get_icon( 'nocomment' ),
+									'link_text_one' => '1 '.get_icon( 'comments' ),
+									'link_text_more' => T_('%d ').get_icon( 'comments' ),
+									'link_title' => '#',
+								) );
+
+					echo '</div>';
+					echo '<h3 class="evo_post_title linked">';
+
+					if( ! $Item->is_intro() )
+					{
+						$permalink_title = 'permalink';
+					}
+					else
+					{
+						$permalink_title = '';
+					}
+
+					$Item->title( array(
+							'link_type' => $permalink_title,
+						) );
+
+					echo '</h3>';
+
+					if( ! $Item->is_intro() )
+					{
+						$Item->issue_date( array(
+								'before'      => '<span class="timestamp">',
+								'after'       => '</span>',
+								'date_format' => locale_datefmt().' H:i',
+							) );
+					}
+				}
+			}
+			else
+			{
 				if( $Item->status != 'published' )
 				{
 					$Item->format_status( array(
 							'template' => '<div class="floatright"><span class="note status_$status$"><span>$status_title$</span></span></div>',
 						) );
 				}
-				
+
 				echo '<div class="action_right">';
-					
+
 				// Link for editing
 				$Item->edit_link( array(
-					'before'    => '',
-					'after'     => '',
-					'title'     => T_('Edit title/description...'),
-				) );
-				
-				if( ! $Item->is_intro() ) {
-				// Permalink:
-				$Item->permanent_link( array(
 						'before'    => '',
 						'after'     => '',
-						'text' => '<i class="fa fa-external-link"></i> '.T_('Permalink'),
+						'title'     => T_('Edit title/description...'),
 					) );
-				}
-					
+
 				// Link to comments, trackbacks, etc.:
 				$Item->feedback_link( array(
 								'type' => 'feedbacks',
@@ -171,51 +374,105 @@ $params = array_merge( array(
 								'link_title' => '#',
 							) );
 
-				
 				echo '</div>';
-				
-			?>
+				echo '<h3 class="evo_post_title linked">';
 
-			<h3 class="evo_post_title linked"><?php
-			
-			if( ! $Item->is_intro() )
-			{
-				$permalink_title = 'permalink';
-			}
-			else
-			{
-				$permalink_title = '';
-			}
 				$Item->title( array(
-					'link_type' => $permalink_title,
+						'link_type' => '',
 					) );
-			?></h3>
 
-			<?php
-			if( ! $Item->is_intro() ) {
-				$Item->issue_date( array(
-						'before'      => '<span class="timestamp">',
-						'after'       => '</span>',
-						'date_format' => locale_datefmt().' H:i',
-					) );
+				echo '</h3>';
 			}
 			?>
 
 		</div>
 
 		<?php
-			// ---------------------- POST CONTENT INCLUDED HERE ----------------------
-			// Note: at the top of this file, we set: 'image_size' =>	'', // Do not display images in content block - Image is handled separately
-			skin_include( '_item_content.inc.php', $params );
-			// Note: You can customize the default item content by copying the generic
-			// /skins/_item_content.inc.php file into the current skin folder.
-			// -------------------------- END OF POST CONTENT -------------------------
+			if( $disp == 'single' )
+			{
+				// ------------------------- "Item Single" CONTAINER EMBEDDED HERE --------------------------
+				// Display container contents:
+				widget_container( 'item_single', array(
+					'widget_context' => 'item',	// Signal that we are displaying within an Item
+					// The following (optional) params will be used as defaults for widgets included in this container:
+					'container_display_if_empty' => false, // If no widget, don't display container at all
+					// This will enclose each widget in a block:
+					'block_start' => '<div class="evo_widget $wi_class$">',
+					'block_end'   => '</div>',
+					// This will enclose the title of each widget:
+					'block_title_start' => '<h3>',
+					'block_title_end'   => '</h3>',
+					// Template params for "Item Link" widget
+					'widget_item_link_before' => '<p class="evo_post_link">',
+					'widget_item_link_after'  => '</p>',
+					// Template params for "Item Tags" widget
+					'widget_item_tags_before' => '<nav class="small post_tags">',
+					'widget_item_tags_after'  => '</nav>',
+					// Params for skin file "_item_content.inc.php"
+					'widget_item_content_params' => $params,
+					// Template params for "Item Attachments" widget:
+					'widget_item_attachments_params' => array(
+							'limit_attach'       => 1000,
+							'before'             => '<div class="evo_post_attachments"><h3>'.T_('Attachments').':</h3><ul class="evo_files">',
+							'after'              => '</ul></div>',
+							'before_attach'      => '<li class="evo_file">',
+							'after_attach'       => '</li>',
+							'before_attach_size' => ' <span class="evo_file_size">(',
+							'after_attach_size'  => ')</span>',
+						),
+				) );
+				// ----------------------------- END OF "Item Single" CONTAINER -----------------------------
+			}
+			elseif( $disp == 'page' )
+			{
+				// ------------------------- "Item Page" CONTAINER EMBEDDED HERE --------------------------
+				// Display container contents:
+				widget_container( 'item_page', array(
+					'widget_context' => 'item',	// Signal that we are displaying within an Item
+					// The following (optional) params will be used as defaults for widgets included in this container:
+					'container_display_if_empty' => false, // If no widget, don't display container at all
+					// This will enclose each widget in a block:
+					'block_start' => '<div class="evo_widget $wi_class$">',
+					'block_end'   => '</div>',
+					// This will enclose the title of each widget:
+					'block_title_start' => '<h3>',
+					'block_title_end'   => '</h3>',
+					// Template params for "Item Link" widget
+					'widget_item_link_before' => '<p class="evo_post_link">',
+					'widget_item_link_after'  => '</p>',
+					// Template params for "Item Tags" widget
+					'widget_item_tags_before' => '<nav class="small post_tags">'.T_('Tags').': ',
+					'widget_item_tags_after'  => '</nav>',
+					// Params for skin file "_item_content.inc.php"
+					'widget_item_content_params' => $params,
+					// Template params for "Item Attachments" widget:
+					'widget_item_attachments_params' => array(
+							'limit_attach'       => 1000,
+							'before'             => '<div class="evo_post_attachments"><h3>'.T_('Attachments').':</h3><ul class="evo_files">',
+							'after'              => '</ul></div>',
+							'before_attach'      => '<li class="evo_file">',
+							'after_attach'       => '</li>',
+							'before_attach_size' => ' <span class="evo_file_size">(',
+							'after_attach_size'  => ')</span>',
+						),
+				) );
+				// ----------------------------- END OF "Item Page" CONTAINER -----------------------------
+			}
+			else
+			{
+				// ---------------------- POST CONTENT INCLUDED HERE ----------------------
+				// Note: at the top of this file, we set: 'image_size' =>	'', // Do not display images in content block - Image is handled separately
+				skin_include( '_item_content.inc.php', $params );
+				// Note: You can customize the default item content by copying the generic
+				// /skins/_item_content.inc.php file into the current skin folder.
+				// -------------------------- END OF POST CONTENT -------------------------
+			}
 		?>
-		
+
 		<?php
 		if( ! $Item->is_intro() ) {
 		?>
-		
+
 		<div class="evo_post_footer">
 		<?php
 			$Item->author( array(
@@ -261,7 +518,7 @@ $params = array_merge( array(
 
 		</div>
 		<?php } ?>
-		
+
 	</div>
 
 	<?php

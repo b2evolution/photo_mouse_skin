@@ -15,16 +15,30 @@
  */
 if( !defined('EVO_MAIN_INIT') ) die( 'Please, do not access this page directly.' );
 
-// -------------------- PREV/NEXT PAGE LINKS (POST LIST MODE) --------------------
-mainlist_page_links( array(
-				'block_start' => '<div class="page_navigation center">',
-				'next_text' => '<i class="fa fa-caret-right" title="'.T_('Next').'"></i>',
-				'prev_text' => '<i class="fa fa-caret-left" title="'.T_('Previous').'"></i>',
-				'block_end'   => '</div>',
-				'page_item_current_before' => '<span class="active">',
-				'page_item_current_after'  => '</span>',
-	) );
-// ------------------------- END OF PREV/NEXT PAGE LINKS -------------------------
+// ------------------------- "Item List" CONTAINER EMBEDDED HERE --------------------------
+// Display container contents:
+widget_container( 'item_list', array(
+	// The following (optional) params will be used as defaults for widgets included in this container:
+	'container_display_if_empty' => false, // If no widget, don't display container at all
+	// This will enclose each widget in a block:
+	'block_start'           => '<div class="evo_widget $wi_class$">',
+	'block_end'             => '</div>',
+	// This will enclose the title of each widget:
+	'block_title_start'     => '<h3>',
+	'block_title_end'       => '</h3>',
+	// The following params will be used as default for widgets
+	'widget_coll_item_list_pages_params' => array(
+		'block_start'              => '<div class="page_navigation center">',
+		'next_text'                => '<i class="fa fa-caret-right" title="'.T_('Next').'"></i>',
+		'prev_text'                => '<i class="fa fa-caret-left" title="'.T_('Previous').'"></i>',
+		'block_end'                => '</div>',
+		'page_item_before'         => '',
+		'page_item_after'          => '',
+		'page_item_current_before' => '<span class="active">',
+		'page_item_current_after'  => '</span>',
+	)
+) );
+// ----------------------------- END OF "Item List" CONTAINER -----------------------------
 
 // --------------------------------- START OF POSTS -------------------------------------
 // Display message if no post:

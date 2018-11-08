@@ -721,6 +721,16 @@ textarea.form-control,
 .main_content_container .btn-primary:hover {
   opacity: 0.8;
 }
+.evo_comment .action_btn_group {
+  float: right;
+}
+.evo_comment .action_btn_group a.btn {
+  background-color: #aaaaaa;
+  border-color: #999999;
+}
+.evo_comment .evo_status {
+  margin-top: 10px;
+}
 .panel-title a:hover,
 .evo_widget ul li a,
 .avatar_main_frame,
@@ -857,7 +867,7 @@ textarea.form-control,
 .disp_posts .disp_front .featurepost {
   margin-bottom: 30px;
 }
-/*                        
+/*
 
 
 asdasdasdasdasdasdas
